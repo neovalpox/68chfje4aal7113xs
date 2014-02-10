@@ -1,0 +1,570 @@
+<div style="height:120px; position: relative;"></div>
+<script type="text/javascript">
+    $("#imageDeplacement").attr("src", "img/battleback/"+map+"-"+coord+".jpg");
+
+</script>
+
+<div style="margin:2%; width:96%; height:42px;" id="envoiChat">
+        <table width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+                <td><input type="text" id="textEnvoiChat" style=" background-image: url('img/degradeChat.png'); color:#959595; box-shadow: -2px 3px 5px 1px rgba(0, 0, 0, 0.7); text-align:left; border: 4px inet #000000; -webkit-border-radius: 8px 8px; font-size:18px; font-weight: bold; position:relative; left:0px; top:0px; width:100%; height:35px;"></td><td align="center"><img src="img/chat.png" onclick="sendChat();"></td>
+            </tr>
+        </table>
+</div>
+<div style="text-align: center;">
+    <div class="grimoire" style="width:96%; height:25%; overflow-y: scroll; background-image: url('img/fondChat.jpg')"  id="chat">
+    </div>
+</div>
+
+
+<div id="affichCombat" style="display:none; position: relative; width:98%;  margin-top: 20px;">
+    <div id="terrainCombat" style="position: absolute; top:0px; left:0px; box-shadow: -2px 3px 5px 1px rgba(0, 0, 0, 0.7); border: #333333 inset 6px;">    
+        <img id="battleBack" src="" style="width:100%;">
+        <div id="monstre1" style="position:absolute; bottom:15px; left:50px; z-index:200; display:none;">
+            <img id="spriteMonstre1" src="" onclick="">
+        </div>
+        <div id="monstre2" style="position:absolute; bottom:15px; left:50px; z-index:200; display:none;">
+            <img id="spriteMonstre2" src="" onclick="">
+        </div>
+        <div id="monstre3" style="position:absolute; bottom:15px; left:50px; z-index:200; display:none;">
+            <img id="spriteMonstre3" src="" onclick="">
+        </div>
+        <div id="noCombat" style="display:none; position:absolute; bottom:20px; width:100%; text-align: center; text-shadow: 0 0 0.4em #000000;"><b><font color='#FFFFFF'>Il n'y plus de monstre pour l'instant.</font></b></div>
+        <div id="compass" style="position:absolute; top:5px; right:-16px; width:64px; height:64px;"><img src="img/compass.png" onclick="loadMap();"></div>
+
+    </div>
+</div>
+
+<div id="afficheDeplacement" style="display:none; position: relative; width:98%;  margin-top: 20px;">
+    <div id="cadreDeplacement" style="position: absolute; top:0px; left:0px; box-shadow: -2px 3px 5px 1px rgba(0, 0, 0, 0.7); border: #333333 inset 6px;">    
+        <img id="imageDeplacement" src="" style="width:100%;">
+            <div id="voyageEnCour" style="display:none; position:absolute; bottom:50px; width:100%; text-align: center; text-shadow: 0 0 0.4em #000000;"><b><font color='#FFFFFF'>Votre voyage se termine dans </font></b></div>
+            <div id="timeVoyage" style="position:absolute; bottom:20px; width:100%; text-align: center; text-shadow: 0 0 0.4em #000000;"></div>
+            <div style="width: 100%; position:absolute; top:0px; left:0px;">
+                <div id="prixAccel" class="boutton2" style="width:80px; height:38px; display:none; position:absolute; top:-15px; right:-15px; text-align: center; text-shadow: 0 0 0.4em #000000;font-size: 25px; webkit-border-radius: 15px;" onclick="accelerer();"></div>
+            </div>
+    </div>
+</div>
+
+<div id="afficheMort" style="display:none; position: relative; width:98%;  margin-top: 20px;">
+    <div id="cadreMort" style="position: absolute; top:0px; left:0px; box-shadow: -2px 3px 5px 1px rgba(0, 0, 0, 0.7); border: #333333 inset 6px;">    
+        <img id="imageMort" src="" style="width:100%;">
+            <div id="resurectionEnCour" style="display:none; position:absolute; bottom:50px; width:100%; text-align: center; text-shadow: 0 0 0.4em #000000;"><b><font color='#FFFFFF'>Vous réssuciterez dans  </font></b></div>
+            <div id="timeResurection" style="position:absolute; bottom:20px; width:100%; text-align: center; text-shadow: 0 0 0.4em #000000;"></div>
+            <div style="width: 100%; position:absolute; top:0px; left:0px;">
+                <div id="prixAccelResurection" class="boutton2" style="width:80px; height:38px; display:none; position:absolute; top:-15px; right:-15px; text-align: center; text-shadow: 0 0 0.4em #000000;font-size: 25px; webkit-border-radius: 15px;" onclick="accelererMort();"></div>
+            </div>
+    </div>
+</div>
+    
+<div style='height:120px;'></div>
+<script type="text/javascript">
+    ///////////////////////////////////////
+    ///////////////////////////////////////
+    ////// Gestion du temps des craft /////
+    ///////////////////////////////////////
+    ///////////////////////////////////////
+    
+
+    
+    recupDonnee();
+    
+    $("#monstre1").hide();
+    $("#monstre2").hide();
+    $("#monstre3").hide();
+    if(typeof(timerAnimeMonstre1)!='undefined'){ 
+        window.clearInterval(timerAnimeMonstre1); 
+    }
+    if(typeof(timerAnimeMonstre2)!='undefined'){ 
+        window.clearInterval(timerAnimeMonstre2); 
+    }
+    if(typeof(timerAnimeMonstre3)!='undefined'){ 
+        window.clearInterval(timerAnimeMonstre3); 
+    }
+
+    $.post(url+"apk/getCombat.php", {pseudo:pseudo,}, function(data){
+            combat = (data.combat/2)*2;
+            if(combat > 3) {
+                combat = 3;
+            }
+            window.localStorage.setItem("combat", combat);
+    });
+    combat = window.localStorage.getItem("combat");
+    $.post(url+"apk/deplacement/getMonstre.php", {map:map, zone:coord, combat:combat}, function(data) {
+        console.log("################################");
+        console.log("## I totalMonstreDifférents = "+data.i);
+        console.log("## I idMonstre1 = "+data.idMonstre1);
+        console.log("## I iconMonstre1 = "+data.iconMonstre1);
+        console.log("################################");
+        nbMonstreDiff = data.i;
+        if(nbMonstreDiff==1 && combat == 3) {
+            idMonstre1 = data.idMonstre1;
+            iconMonstre1 = data.iconMonstre1;
+            idMonstre2 = data.idMonstre1;
+            iconMonstre2 = data.iconMonstre1;
+            idMonstre3 = data.idMonstre1;
+            iconMonstre3 = data.iconMonstre1;
+        } else if(nbMonstreDiff==3 && combat == 3) {
+            numberIdMonstre = Math.floor((Math.random()*nbMonstreDiff)+1);
+            idMonstre1 = eval("data.idMonstre"+numberIdMonstre);
+            iconMonstre1 = eval("data.iconMonstre"+numberIdMonstre);
+            numberIdMonstre = Math.floor((Math.random()*nbMonstreDiff)+1);
+            idMonstre2 = eval("data.idMonstre"+numberIdMonstre);
+            iconMonstre2 = eval("data.iconMonstre"+numberIdMonstre);
+            numberIdMonstre = Math.floor((Math.random()*nbMonstreDiff)+1);
+            idMonstre3 = eval("data.idMonstre"+numberIdMonstre);
+            iconMonstre3 = eval("data.iconMonstre"+numberIdMonstre);
+        } else if(nbMonstreDiff==3 && combat == 2) {
+            numberIdMonstre = Math.floor((Math.random()*nbMonstreDiff)+1);
+            idMonstre1 = eval("data.idMonstre"+numberIdMonstre);
+            iconMonstre1 = eval("data.iconMonstre"+numberIdMonstre);
+            numberIdMonstre = Math.floor((Math.random()*nbMonstreDiff)+1);
+            idMonstre2 = eval("data.idMonstre"+numberIdMonstre);
+            iconMonstre2 = eval("data.iconMonstre"+numberIdMonstre);
+        }  else if(nbMonstreDiff==3 && combat == 1) {
+            numberIdMonstre = Math.floor((Math.random()*nbMonstreDiff)+1);
+            idMonstre1 = eval("data.idMonstre"+numberIdMonstre);
+            iconMonstre1 = eval("data.iconMonstre"+numberIdMonstre);
+        } else if(nbMonstreDiff==2 && combat == 3) {
+            numberIdMonstre = Math.floor((Math.random()*nbMonstreDiff)+1);
+            idMonstre1 = eval("data.idMonstre"+numberIdMonstre);
+            iconMonstre1 = eval("data.iconMonstre"+numberIdMonstre);
+            console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            console.log("@@ idMonstre1 = "+idMonstre1+" @@");
+            console.log("@@ iconMonstre1 = "+iconMonstre1+" @@");
+            console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            numberIdMonstre = Math.floor((Math.random()*nbMonstreDiff)+1);
+            idMonstre2 = eval("data.idMonstre"+numberIdMonstre);
+            iconMonstre2 = eval("data.iconMonstre"+numberIdMonstre);
+            console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            console.log("@@ idMonstre2 = "+idMonstre2+" @@");
+            console.log("@@ iconMonstre2 = "+iconMonstre2+" @@");
+            console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            numberIdMonstre = Math.floor((Math.random()*nbMonstreDiff)+1);
+            idMonstre3 = eval("data.idMonstre"+numberIdMonstre);
+            iconMonstre3 = eval("data.iconMonstre"+numberIdMonstre);
+            console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            console.log("@@ idMonstre3 = "+idMonstre3+" @@");
+            console.log("@@ iconMonstre3 = "+iconMonstre3+" @@");
+            console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        } else if(nbMonstreDiff==2 && combat == 2) {
+            numberIdMonstre = Math.floor((Math.random()*nbMonstreDiff)+1);
+            idMonstre1 = eval("data.idMonstre"+numberIdMonstre);
+            iconMonstre1 = eval("data.iconMonstre"+numberIdMonstre);
+            numberIdMonstre = Math.floor((Math.random()*nbMonstreDiff));
+            idMonstre2 = eval("data.idMonstre"+numberIdMonstre);
+            iconMonstre2 = eval("data.iconMonstre"+numberIdMonstre);
+        }
+        
+        
+        for(j=1; j<combat+1; j++) {
+            $("#spriteMonstre"+j).attr("src", "img/sprites/front/"+eval('iconMonstre'+j)+".png");
+            $("#spriteMonstre"+j).attr("onclick", "lancerCombat("+eval('idMonstre'+j)+")");
+            
+            window.localStorage.setItem("idMonstre"+j, eval("idMonstre"+j));
+            window.localStorage.setItem("iconMonstre"+j, eval("iconMonstre"+j));
+        }
+    })
+    
+    $("#battleBack").attr("src", "img/battleback/"+map+"-"+coord+".jpg");
+    
+    $("#imageMort").attr("src", "img/battleback/0-0-0.jpg");
+    
+    combat = window.localStorage.getItem("combat");
+    if(combat == 1) {
+        $("#noCombat").hide();
+        timerAnimeMonstre1 = window.setInterval("animeMonstre1()", 120);
+        posxMonstre1 = Math.floor((Math.random()*350)+20);
+        $("#monstre1").css({"left": posxMonstre1});
+        $("#monstre1").show();
+    } else if (combat == 2) {
+        $("#noCombat").hide();
+        timerAnimeMonstre1 = window.setInterval("animeMonstre1()", 120);
+        posxMonstre1 = Math.floor((Math.random()*350)+20);
+        $("#monstre1").css({"left": posxMonstre1});
+        $("#monstre1").show();
+        
+        timerAnimeMonstre2 = window.setInterval("animeMonstre2()", 120);
+        posxMonstre2 = Math.floor((Math.random()*350)+20);
+        $("#monstre2").css({"left": posxMonstre2});
+        $("#monstre2").show();
+
+    } else if (combat >= 3) {
+        $("#noCombat").hide();
+        timerAnimeMonstre1 = window.setInterval("animeMonstre1()", 120);
+        posxMonstre1 = Math.floor((Math.random()*350)+20);
+        $("#monstre1").css({"left": posxMonstre1});
+        $("#monstre1").show();
+        
+        timerAnimeMonstre2 = window.setInterval("animeMonstre2()", 120);
+        posxMonstre2 = Math.floor((Math.random()*350)+20);
+        if(posxMonstre2 <= posxMonstre1+20 && posxMonstre2 >= posxMonstre1-20) {
+            if(posxMonstre2>= 40) {
+                posxMonstre2 = posxMonstre2-30;
+            } else if(posxMonstre2 <= 340) {
+                posxMonstre2 = posxMonstre2+30;
+            }
+        }
+        $("#monstre2").css({"left": posxMonstre2});
+        $("#monstre2").show();
+        
+        timerAnimeMonstre3 = window.setInterval("animeMonstre3()", 120);
+        posxMonstre3 = Math.floor((Math.random()*350)+20);
+        if(posxMonstre3 <= posxMonstre1+20 && posxMonstre3 >= posxMonstre1-20) {
+            if(posxMonstre3 <= posxMonstre2+20 && posxMonstre3 >= posxMonstre2-20) {
+                if(posxMonstre2>= 40) {
+                posxMonstre2 = posxMonstre2-30;
+                } else if(posxMonstre2 <= 340) {
+                    posxMonstre2 = posxMonstre2+30;
+                }
+            }
+            
+        }
+        $("#monstre3").css({"left": posxMonstre3});
+        $("#monstre3").show();
+    } else if(combat == 0) {
+        $("#noCombat").show();
+    }
+    
+    i = 1;
+    function animeMonstre1() {
+        if(i == 5) {
+            i = 1;
+        }
+        iconMonstre1 = window.localStorage.getItem("iconMonstre1");
+        $("#spriteMonstre1").attr("src", "img/sprites/front/"+iconMonstre1+"/"+i+".png");
+        i++;
+        
+    }
+    j = 1;
+    function animeMonstre2() {
+        if(j == 5) {
+            j = 1;
+        }
+        iconMonstre2 = window.localStorage.getItem("iconMonstre2");
+        $("#spriteMonstre2").attr("src", "img/sprites/front/"+iconMonstre2+"/"+j+".png");
+        j++;
+        
+    }
+    k = 1;
+    function animeMonstre3() {
+        if(k == 5) {
+            k = 1;
+        }
+        iconMonstre3 = window.localStorage.getItem("iconMonstre3");
+        $("#spriteMonstre3").attr("src", "img/sprites/front/"+iconMonstre3+"/"+k+".png");
+        k++;
+        
+    }
+    
+    function sendChat() {
+        
+        message = $("#textEnvoiChat").val();
+        $("#textEnvoiChat").val("");
+        pseudo = window.localStorage.getItem("pseudo");
+        if(message != "") {
+            $.post(url+"apk/sendChat.php", {message: message, pseudo: pseudo}, function(data) {
+                if(data.error == 0) {
+                    refreshChat();
+                }
+            });
+        }
+    }
+    function refreshChat() {
+        $.post(url+"apk/getChat.php", function(data){
+            $("#chat").html(data.message);
+        });
+    }
+    refreshChat();
+    timerChat = window.setInterval("refreshChat()", 6000);
+    
+    function menuChat(pseudoChat, iChat) {
+//        $("#ligneChat_"+iChat).html("<div style='position:absolute; background-image:url(img/bullChatMenu.png);'><div class='boutton'>Profil</div><br><div class='boutton'>Privé</div><br></div>");
+    }
+    
+    function loadMap() {
+        window.location.replace("map.php");
+    }
+    
+    ////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    ///// Récupération des infos sur le voyage /////
+    ////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    function recupDonnee() {
+        $.post(url+"apk/deplacement/getDeplacement.php", {pseudo:pseudo}, function(data) {
+            deplacement = data.deplacement;
+            if(deplacement != 1 && vie == "vie") {
+                $("#affichCombat").show();
+            } else if(vie != "vie") {
+                $("#afficheMort").show();
+                total_secondes = window.localStorage.getItem("dateDiffMort");
+                tempsMort = window.localStorage.getItem("tempsMort");
+                dateNow = window.localStorage.getItem("dateNow");
+                dateDebut = window.localStorage.getItem("dateDebutMort");
+
+                jours = Math.floor(total_secondes / (60 * 60 * 24));
+                heures = Math.floor((total_secondes - (jours * 60 * 60 * 24)) / (60 * 60));
+                minutes = Math.floor((total_secondes - ((jours * 60 * 60 * 24 + heures * 60 * 60))) / 60);
+                secondes = Math.floor(total_secondes - ((jours * 60 * 60 * 24 + heures * 60 * 60 + minutes * 60)));
+
+                if ( typeof( window.clockMort ) != "undefined" ) {
+                    window.clearInterval(clockMort);
+                    clockMort = window.setInterval("timeNewMort()", 1000);
+                } else {
+                    clockMort = window.setInterval("timeNewMort()", 1000);
+                }
+                $("#resurectionEnCour").show();
+
+            } else {
+                tempsDeplacement = data.tempsDeplacement;
+                window.localStorage.setItem("tempDeplacement", tempsDeplacement);
+                dateDiff = data.dateDiff/2*2;
+                total_secondes = window.localStorage.getItem("dateDiff");
+                tempsVoyage = window.localStorage.getItem("tempDeplacement");
+                dateNow = window.localStorage.getItem("dateNow");
+                dateDebut = window.localStorage.getItem("dateDebut");
+
+                jours = Math.floor(total_secondes / (60 * 60 * 24));
+                heures = Math.floor((total_secondes - (jours * 60 * 60 * 24)) / (60 * 60));
+                minutes = Math.floor((total_secondes - ((jours * 60 * 60 * 24 + heures * 60 * 60))) / 60);
+                secondes = Math.floor(total_secondes - ((jours * 60 * 60 * 24 + heures * 60 * 60 + minutes * 60)));
+
+                if ( typeof( window.clock ) != "undefined" ) {
+                    window.clearInterval(clock);
+                    clock = window.setInterval("timeNew()", 1000);
+                } else {
+                    clock = window.setInterval("timeNew()", 1000);
+                }
+                window.localStorage.setItem("dateDiff", dateDiff);
+                dateNow = data.dateNow/2*2;
+                window.localStorage.setItem("dateNow", dateNow);
+                dateDebut = data.dateDebut/2*2;
+                window.localStorage.setItem("dateDebut", dateDebut);
+                
+                total_secondes = window.localStorage.getItem("dateDiff");
+                tempsVoyage = window.localStorage.getItem("tempDeplacement");
+                dateNow = window.localStorage.getItem("dateNow");
+                dateDebut = window.localStorage.getItem("dateDebut");
+
+                jours = Math.floor(total_secondes / (60 * 60 * 24));
+                heures = Math.floor((total_secondes - (jours * 60 * 60 * 24)) / (60 * 60));
+                minutes = Math.floor((total_secondes - ((jours * 60 * 60 * 24 + heures * 60 * 60))) / 60);
+                secondes = Math.floor(total_secondes - ((jours * 60 * 60 * 24 + heures * 60 * 60 + minutes * 60)));
+
+                if ( typeof( window.clock ) != "undefined" ) {
+                    window.clearInterval(clock);
+                    clock = window.setInterval("timeNew()", 1000);
+                } else {
+                    clock = window.setInterval("timeNew()", 1000);
+                }
+                if(vie == "vie") {
+                    $("#afficheDeplacement").show();
+                }
+            }
+        });
+    }
+
+    
+    function timeNew() {
+        tempsBarre = total_secondes;
+        tempsBarreMax = tempsVoyage;
+        widthXP = ((tempsBarre*100/tempsBarreMax)*400/100)-14;
+        
+        $("#widthVoyage").attr("width",widthXP);
+        total_secondes = total_secondes -1;
+        secondes = secondes - 1;
+        if(secondes < 0) {
+            secondes = 59;
+            minutes = minutes-1;
+        }
+        if(minutes < 0) {
+            minutes = 59;
+            heures = heures - 1;
+        }
+        
+        if(heures > 1) {
+            lettreJours = "s";
+        } else {
+            lettreJours = "";
+        }
+        if(heures > 1) {
+            lettreHeures = "s";
+        } else {
+            lettreHeures = "";
+        }
+        if(minutes > 1) {
+            lettreMinutes = "s";
+        } else {
+            lettreMinutes = "";
+        }
+        if(secondes > 1) {
+            lettreSecondes = "s";
+        } else {
+            lettreSecondes = "";
+        }
+        
+        if(jours == 0) {
+            timeSet = heures + " heure"+lettreHeures+" " + minutes + " minute"+lettreMinutes+" " + secondes + " seconde"+lettreSecondes;
+            if(heures == 0) {
+                timeSet = minutes + " minute"+lettreMinutes+" " + secondes + " seconde"+lettreSecondes;
+                if(minutes == 0) {
+                    timeSet = secondes + " seconde"+lettreSecondes;
+                }
+            }
+        } else {
+            timeSet = jours + " jour"+lettreJours+" " + heures + " heure"+lettreHeures+" " + minutes + " minute"+lettreMinutes+" " + secondes + " seconde"+lettreSecondes;
+        }
+        prixAccel = Math.round(((jours*60*24)+(heures*60)+minutes)/3)+1;
+        if(total_secondes > 0){
+            $("#timeVoyage").html("<b><font color='#FFFFFF'>"+timeSet+"</font></b>");
+            $("#prixAccel").html("<div style='position:relative; top:2px; z-index:10;'><b><font color='#FFFFFF'>"+prixAccel+"</font></b><img src='img/prisme.png' align='absmiddle' width='24'></div>");
+            $("#voyageEnCour").show();
+            $("#prixAccel").show();
+        } else {
+            getVoyageComplete();
+            $("#timeVoyage").hide();
+            $("#prixAccel").hide();
+        }
+    }
+    
+    function timeNewMort() {
+        tempsBarre = total_secondes;
+        tempsBarreMax = tempsMort;
+        widthXP = ((tempsBarre*100/tempsBarreMax)*400/100)-14;
+        
+        $("#widthMort").attr("width",widthXP);
+        total_secondes = total_secondes -1;
+        secondes = secondes - 1;
+        if(secondes < 0) {
+            secondes = 59;
+            minutes = minutes-1;
+        }
+        if(minutes < 0) {
+            minutes = 59;
+            heures = heures - 1;
+        }
+        
+        if(heures > 1) {
+            lettreJours = "s";
+        } else {
+            lettreJours = "";
+        }
+        if(heures > 1) {
+            lettreHeures = "s";
+        } else {
+            lettreHeures = "";
+        }
+        if(minutes > 1) {
+            lettreMinutes = "s";
+        } else {
+            lettreMinutes = "";
+        }
+        if(secondes > 1) {
+            lettreSecondes = "s";
+        } else {
+            lettreSecondes = "";
+        }
+        
+        if(jours == 0) {
+            timeSetMort = heures + " heure"+lettreHeures+" " + minutes + " minute"+lettreMinutes+" " + secondes + " seconde"+lettreSecondes;
+            if(heures == 0) {
+                timeSetMort = minutes + " minute"+lettreMinutes+" " + secondes + " seconde"+lettreSecondes;
+                if(minutes == 0) {
+                    timeSetMort = secondes + " seconde"+lettreSecondes;
+                }
+            }
+        } else {
+            timeSetMort = jours + " jour"+lettreJours+" " + heures + " heure"+lettreHeures+" " + minutes + " minute"+lettreMinutes+" " + secondes + " seconde"+lettreSecondes;
+        }
+        prixAccelMort = Math.round(((jours*60*24)+(heures*60)+minutes)/3)+1;
+        if(total_secondes > 0){
+            $("#timeResurection").html("<b><font color='#FFFFFF'>"+timeSetMort+"</font></b>");
+            $("#prixAccelResurection").html("<div style='position:relative; top:2px; z-index:10;'><b><font color='#FFFFFF'>"+prixAccelMort+"</font></b><img src='img/prisme.png' align='absmiddle' width='24'></div>");
+            $("#ResurectionEnCour").show();
+            $("#prixAccelResurection").show();
+        } else {
+            getMortComplete();
+            $("#timeResurection").hide();
+            $("#prixAccelMort").hide();
+        }
+    }
+    
+    function getVoyageComplete() {
+        window.clearInterval(clock);
+
+        $.post(url+"apk/deplacement/majDeplacement.php", {pseudo:pseudo}, function(data){
+            if(data.error == 0) {                
+                $("#afficheDeplacement").hide(0, function() {
+                    majInfoPlayer(pseudo);
+                    $("#battleBack").attr("src", "img/battleback/"+map+"-"+coord+".jpg", function() {
+                        $("#affichCombat").show();
+                    });
+                    
+                });
+            }
+        });
+        
+        
+    }
+    
+    function getMortComplete() {
+        window.clearInterval(clockMort);
+
+        $.post(url+"apk/deplacement/majMort.php", {pseudo:pseudo}, function(data){
+            if(data.error == 0) {                
+                $("#afficheMort").hide(0, function() {
+                    majInfoPlayer(pseudo);
+                    $("#battleBack").attr("src", "img/battleback/"+map+"-"+coord+".jpg", function() {
+                        $("#affichCombat").show();
+                    });
+                    
+                });
+            }
+        });
+        
+        
+    }
+    
+    function accelerer() {
+        if(confirm("Voulez-vous vous téléporter directement sur place pour "+prixAccel+" prismes ?")) {
+            if(diamant >= prixAccel) {
+                newPrismes = diamant - prixAccel;
+                $("#prismes").html(newPrismes)
+                $.post(url+"apk/joueur/majPrismes.php",{pseudo:pseudo, newPrismes:newPrismes}, function(data) {
+                    if(data.error == 0) {
+                        getVoyageComplete();
+                    } else {
+                        alert("Une erreur est survenue lors de l'utilsation de vos prismes.")
+                    }
+                })
+                
+            } else {
+                if(confirm("Vous n'avez pas assez de prismes. Désirez-vous en acheter ?")) {
+                    
+                }
+            }
+        }
+    }
+    
+    function accelererMort() {
+        if(confirm("Voulez-vous ressuciter instantanémant pour "+prixAccelMort+" prismes ?")) {
+            if(diamant >= prixAccelMort) {
+                newPrismes = diamant - prixAccelMort;
+                $("#prismes").html(newPrismes)
+                $.post(url+"apk/joueur/majPrismes.php",{pseudo:pseudo, newPrismes:newPrismes}, function(data) {
+                    if(data.error == 0) {
+                        getMortComplete();
+                    } else {
+                        alert("Une erreur est survenue lors de l'utilsation de vos prismes.")
+                    }
+                })
+                
+            } else {
+                if(confirm("Vous n'avez pas assez de prismes. Désirez-vous en acheter ?")) {
+                    
+                }
+            }
+        }
+    }
+</script> 

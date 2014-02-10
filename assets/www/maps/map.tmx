@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="40" height="70" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="tileset_world" tilewidth="32" tileheight="32">
+  <image source="../../../../../../Documents/TilesSet/tileset_world.png" width="256" height="1216"/>
+ </tileset>
+ <tileset firstgid="305" name="ierZoPxp4VWvV" tilewidth="32" tileheight="32">
+  <image source="../../../../../../Documents/TilesSet/ierZoPxp4VWvV.png" width="512" height="512"/>
+ </tileset>
+ <tileset firstgid="561" name="004-Mountain01" tilewidth="32" tileheight="32">
+  <image source="../../../../../../Documents/TilesSet/004-Mountain01.png" width="256" height="896"/>
+ </tileset>
+ <tileset firstgid="785" name="tilestreesezra" tilewidth="32" tileheight="32">
+  <image source="../../../../../../Documents/TilesSet/tilestreesezra.png" width="600" height="600"/>
+ </tileset>
+ <tileset firstgid="1109" name="RPG_Maker_VX_RTP_Tileset_by_telles0808" tilewidth="32" tileheight="32">
+  <image source="../../../../../../Documents/TilesSet/RPG_Maker_VX_RTP_Tileset_by_telles0808.png" width="1024" height="2016"/>
+ </tileset>
+ <layer name="Calque 4" width="40" height="70" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztzrENACAIAEHCyM7iwBS0hkpjc5d8/xEAAABw18rfB7Od/XgKAAAAAAAA4LUCMNwDww==
+  </data>
+ </layer>
+ <layer name="Calque de Tile 1" width="40" height="70" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJzt2VGOgjAQBuDaG3ER9WnD0+oVEH1bTsF6X51EEqztzEChM8RpMg9GY74MBdq/zm1n7L1zh4l19OVc1bN2blrdVnaC7TrDlXIu3f+fBWw5VZvvq32/wr4z4Wu8XA+hd+3Gfb1yHwzNvr3g/QG+u+L7l3q2wJC+PzT7Ksb6QNLH6SE8X2wOmk/SN8zBE1J/K/o5e5fm9Zt/H6+1+0sZoYfY/nKJPVTOdZZ8D1M+aRvlk96DmM985nuv8P2E7YNL+caWS1DYPqmErw4s2n3h+x3bx5VYP9dMS2w0Bdb4nHUe5iuxRp2bUfeFfFBzzwCkcyLOMF/e3JR+D1NzUtqHXXMNa3zMp6l35jOfdG3Jp+3ZEvq09c585pMu802vLpF3SPnGnjD3aIV9XSSHaRX5av+Zw4w/35X6YiN1dpQzl6g6R3ypXKbxn3nX5ZXJwLlWhVTn05keVi3SL65vyI2oPqQyPcrHzbEwX+q7cE7P8XEHZC+xM0Gub8j0Uv+T65vq5uae2P9wr+0D2Ku6eA==
+  </data>
+ </layer>
+ <layer name="chemin" width="40" height="70" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztmN1qwzAMhduQtLvYejl6M5qLjbz/U20P0G67WMssakFiosU/nXUK+qAEkoIPOrIsebUyDCOVr7W2gr95d/o+TGMxJRpr5UjuOrX0fWeu89DcVocEebx1aw3N9Rnrt1b+7hPikhv7EiTffpyWs/9dvK6xvlpaybeumXp+cu92zfQ/9P7Nfwu//zfo5wuiPs6vJ+8b+fcJovMo5I/G/pxD0lGrBkvw3twIOlJqoQav4Pq0/V3iHvw9BecJSs05OC29j994fyP03WE9DPNQU+NcrdbOw8NCH6J5jlC8+oX4aNUZ6dwN0fI31jet/ZDiG2msVfs4bqm+1dLYzswUsaD0hBLWM+QTW4+0QM+9Fqi/kkCPIfr+NcqonX9873KJXLdW/nG/zHcHj34+6/yTvg2jvprvAp9H94JI8xxBc0B4fiDMc4yUeyg1Uco9lJoo9S7cT3ZK99HEdib3Ql5A4iiB4rMEcu9KoOxjCaRaKFEyGxqGYRiGYfwC6qJW2A==
+  </data>
+ </layer>
+ <layer name="arbre2" width="40" height="70" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJzt2ksKgCAARVGnOq+d1E5qc7WT2laNQ0KSMkMoP3HPRFKwx3OoQgDAbpb3a5P0rwMAAACxNOo61zrmUukcWfqM8uVK90ZP//R0tpx9GNMXvYWhLwAAAKAcixRizehe0uQxY6XiZBys/UfPv3SeWh2jPfelycpU2j2yr88cpO4z9G0AfbrxxuId5x7N912/9A6gNBu2ex+z
+  </data>
+ </layer>
+ <layer name="arbres" width="40" height="70" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztmj0OwjAMhcPYMvMjwSUYys/IIcrl4CblJFA4AbDBAAx4IKIqbeOUJDaSPynygtLHwwlt85QSBBzrSKlNZK5U2vYwckSl0JjBNR8wnoi69aSvZ5g3i5p9pPptyxpD+2ZL9tZSrj7ZMfnuddyZ6+OGaa3+E4uYWoHAhbyj1KET7nq26+gE2s4/6vPR7z72g23X/ZwuyZH6JgH7qQ1L5vqwJNDX0/hTuTEATcP4U7mg/ZrBmBcqBx+T+Nu3crXVeHTU73W+levKUt/FgT6Mb239c0GK8K2tfy5p8jG0b1X/sU0++vQNew+REPqFIWXSZ4Ig/Acj2CfGslcIgiAIAhlXeCa6Gd49+njfaZpT6+rB5/oB7xWwZ9yhdWn0WS03tG/6rJZDZqCozZQZoASTHXDtZ5s1bZPBoMAmg0GZbbHxkSKjYeMjZUZjXeNLlb/UmaCiL1X+UmVb6rIrIbMtgiBU8wLmxrrg
+  </data>
+ </layer>
+ <objectgroup name="Calque d'objets 1" width="40" height="70" visible="0"/>
+ <layer name="herbe" width="40" height="70">
+  <data encoding="base64" compression="zlib">
+   eJztmdFuwzAIRaP8Wdcnb+mDt+X/f2WOVGsIgU0T25dKvpIfGrXJKQYCeFmmpt5Pt3VZPtK6r2gSWSFxfab15Zzv4dCGx95uT77RjDW/4myjGDPXRp4ncQaBjTL2kvZc7v8xff5O61f47u6ADyWNL+9zXqhYjcqeebJnyffRfFresPLl+Ocr+8Ptom+UbLc/Y/ZYP8ozav67XbR9ic9yX4v/XuGLxEY8v1nvW/Pflu8Yyqvtqfabkh095NOrvoLg21/ci56SYsWD3ah4vHmw29S/6PsK3V9I787NkW9r+aqWE0b1wDQfWGqBrJE9cDQyUb1Lj+6BrxRDaL5abY3ms9R1PI5H5k9L38TtGDrbl/5/S980ms9qMwSfFg80d0u9CuWIyvUWenUWo+X2XvmR15Zna0xpxuqpLpJ8kF7TZoxe+ND5XYoRiY/v/0h78tjR5iCt5jStmLUZw34iDnsxtsgRZ+T97CvvH9qPSgqT75LC6vPsMMtT78RF6zNvNpRqRzSjpRfwfq6DsqFlZo9mpJw1VrQvHhp5TtODDz0vr/GhVTsLRUurPdH7OjU1NVZ/vnqqAQ==
+  </data>
+ </layer>
+ <layer name="Calque 2" width="40" height="70" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztmDlOw1AYBp+FkJJQgjkIVJAOGiAVm6hZe7YDELgFJByA7QBsB2C7DE4FEoOiyIVtKRhi/9jfSKO/9MTLy7OdE2VjynNuGute3iXxzNO1gI2EvrVKtj2i+KymuKeKch+e8pydYQvbeG5sXbig5xKv8BpvMuw77OMa39Jzh/f4gI/Gzt8TPc/4gq/4ZqyvLPRzLwkhykPSmlCUvYUQ/4E0+38hisg27wc7ekcQIpZ6Le8CIbr8ZN+yyJq+hMu4MsD1Pe13jnWaNnATtwz+/+zStIf7eBDTl/ce8oimJh7jicHzlyVzGfz+IY4x7EWnBb5b3pmBi87f8hffMUfo+2B+uui0wCh9Y+gP8HoGVec61XBaodfjs88Zr4XTCtZ6ysoEz8akkfUujhnaZg33CSGEEEKk4Qs0GjCV
+  </data>
+ </layer>
+ <layer name="3" width="40" height="70" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJzt0rEKgzAUhtFkcBB1an05H73v4VIqmCGgLejY3OEc+JdMH9ykBAAAAAAAAPDt1bcuuPcO3vdPXW5dcG2ti9C4lD/zzMc+5W2rmwL0/Rpy/L6xLmLf43TrOWAfAADsQfYKHw==
+  </data>
+ </layer>
+</map>
